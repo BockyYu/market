@@ -1,0 +1,36 @@
+{
+  "data": [
+    {
+      "name": "debreca",
+      "chinese_name": "德柏戒指",
+      "item": "ring",
+      "max_lv": 6,
+      "main_key": 12094,
+      "url": "https://garmoth.com/api/market/bidding-info-list?region=tw&main_key={main_key}&sub_key={lv}"
+    },
+    {
+      "name": "debreca",
+      "chinese_name": "德柏項鍊",
+      "item": "ring",
+      "max_lv": 6,
+      "main_key": 11653,
+      "url": "https://garmoth.com/api/market/bidding-info-list?region=tw&main_key={main_key}&sub_key={lv}"
+    },
+    {
+      "name": "debreca",
+      "chinese_name": "德柏腰帶",
+      "item": "ring",
+      "max_lv": 6,
+      "main_key": 12276,
+      "url": "https://garmoth.com/api/market/bidding-info-list?region=tw&main_key={main_key}&sub_key={lv}"
+    },
+    {
+      "name": "debreca",
+      "chinese_name": "德柏耳環",
+      "item": "ring",
+      "max_lv": 6,
+      "main_key": 11882,
+      "url": "https://garmoth.com/api/market/bidding-info-list?region=tw&main_key={main_key}&sub_key={lv}"
+    }
+  ]
+}
