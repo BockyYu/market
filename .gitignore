@@ -158,7 +158,7 @@ cython_debug/
 apps/service/key.json
 *.xlsx
 
-config.locak.toml
+apps/config/config.locak.toml
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
