@@ -1,3 +1,4 @@
+from datetime import datetime
 from apps.model import ItemPriceInfo
 from typing import List
 from playwright.sync_api import sync_playwright
@@ -55,18 +56,16 @@ def get_market_data(config: dict):
     if not objs:
         raise ValueError("No data was collected")
 
-    for obj in objs:
-        print(obj.model_dump())
-
     return objs
 
 
-def export_to_excel(objs: List[ItemPriceInfo], filename: str = "market_data.xlsx"):
-    if not objs:
-        raise ValueError("No data to export")
+def export_to_excel(objs: List[ItemPriceInfo], filename: str = "market_data_{date}.xlsx"):
     """
     將物品資訊匯出為Excel檔案，使用 openpyxl 引擎
     """
+    if not objs:
+        raise ValueError("No data to export")
+
     data = {
         '品項': [],
         '單價': [],
@@ -97,4 +96,14 @@ def export_to_excel(objs: List[ItemPriceInfo], filename: str = "market_data.xlsx
         data['琉淨利潤'].append(obj.lv4_net_profit)
 
     df = pd.DataFrame(data)
-    df.to_excel(filename, index=False, engine='openpyxl')
+
+    current_time = datetime.now()
+    filename = filename.format(date=current_time.strftime('%Y%m%d'))
+
+    with pd.ExcelWriter(filename, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='市場資料')
+
+        worksheet = writer.sheets['市場資料']
+        last_row = len(df) + 2
+        update_time = current_time.strftime('%Y-%m-%d %H:%M:%S')
+        worksheet.cell(row=last_row, column=1, value=f'最後更新時間：{update_time}')

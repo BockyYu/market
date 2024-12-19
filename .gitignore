@@ -156,9 +156,9 @@ cython_debug/
 
 # Project specific
 apps/service/key.json
+apps/config/config.local.toml
 *.xlsx
 
-apps/config/config.local.toml
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
