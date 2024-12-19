@@ -8,7 +8,7 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 from googleapiclient.errors import HttpError
-from apps.config.config import UploadConfigs
+from apps.config.config import Configs
 
 logging.basicConfig(
     level=logging.INFO,
@@ -19,8 +19,9 @@ logger = logging.getLogger(__name__)
 
 class GoogleDriveUploader:
     def __init__(self):
-        self.upload_folder = UploadConfigs.get("UploadFolder")
-        self.scopes = UploadConfigs.get("SCOPES")
+        cnf_upload = Configs.get("Upload")
+        self.upload_folder = cnf_upload.get("UploadFolder")
+        self.scopes = cnf_upload.get("Scopes")
         # 修正 key.json 的路徑
         self.service_account_file = Path(__file__).parent / 'key.json'
         self._service = None

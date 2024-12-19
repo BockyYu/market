@@ -2,6 +2,6 @@
 name = "google drive"
 # 填入自己的upload_folder路徑名稱
 # EX:https://drive.google.com/drive/folders/wkel2ifI9j2fIW14 就填入wkel2ifI9j2fIW14
-upload_folder = ""
+upload_folder = "default_folder_id"
 # scopes
 scopes = ["https://www.googleapis.com/auth/drive"]
