@@ -33,8 +33,8 @@ class UploadConfigs:
             配置值
         """
         config_map = {
-            "Name": config["google_drive"]["name"],
-            "UploadFolder": config["google_drive"]["upload_folder"],
-            "Scopes": config["google_drive"]["scopes"],
+            "Name": config["upload"]["name"],
+            "UploadFolder": config["upload"]["upload_folder"],
+            "Scopes": config["upload"]["scopes"],
         }
         return config_map.get(key)

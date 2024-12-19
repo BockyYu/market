@@ -157,6 +157,7 @@ cython_debug/
 # Project specific
 apps/service/key.json
 apps/config/config.local.toml
+apps/service/google_upload/key.json
 *.xlsx
 
 
