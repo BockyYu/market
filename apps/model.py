@@ -48,4 +48,10 @@ class ItemPriceInfo(BaseModel):
                 price = amount / self.unit_value
                 setattr(self, price_attrs[index], price)
                 return
+        for bid in reversed(bidding):  # 從最後的元素開始取得資料
+            count, amount = bid[2], bid[1]
+            if count > 0:  # 如果數量大於0
+                price = amount / self.unit_value
+                setattr(self, price_attrs[index], price)
+                return
         return
