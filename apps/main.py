@@ -1,25 +1,69 @@
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import JSONResponse
 import os
 import json
 from apps.service.google_upload.upload import do_upload
 from apps.service.market import get_market_data, export_to_excel
 from typing import Dict
 from pydantic import BaseModel
-from functools import partial
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import uvicorn
-
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from datetime import datetime
 
 app = FastAPI(title="Market Data API")
-
-# 建立線程池
+scheduler = AsyncIOScheduler()
 thread_pool = ThreadPoolExecutor()
 
+async def scheduled_market_data_task():
+    try:
+        config = load_config()
+        market_data = await run_in_thread(get_market_data, config)
+        await run_in_thread(export_to_excel, market_data)
+        await run_in_thread(do_upload)
 
-# 載入設定檔
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        print(f"Task completed successfully at {current_time}")
+
+    except Exception as e:
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        print(f"Task failed at {current_time}: {str(e)}")
+
+
+@app.on_event("startup")
+async def setup_scheduler():
+    # 21:00 到 23:59 每半小時執行一次
+    scheduler.add_job(
+        scheduled_market_data_task,
+        'cron',
+        hour='21-23',
+        minute='0,30'
+    )
+
+    # 00:00 到 02:00 每半小時執行一次
+    scheduler.add_job(
+        scheduled_market_data_task,
+        'cron',
+        hour='0-2',
+        minute='0,30'
+    )
+
+    scheduler.start()
+    print("Scheduler started successfully")
+
+
+@app.get("/next-run")
+async def get_next_run():
+    # 添加檢查下次執行時間的端點
+    jobs = scheduler.get_jobs()
+    next_runs = []
+    for job in jobs:
+        next_runs.append(job.next_run_time.strftime("%Y-%m-%d %H:%M:%S"))
+    return {"next_run_times": sorted(next_runs)}
+
 def load_config() -> Dict:
+    # 載入設定檔
     script_dir = os.path.dirname(os.path.abspath(__file__))
     json_path = os.path.join(script_dir, 'data.json')
     try:
