@@ -49,6 +49,14 @@ async def setup_scheduler():
         minute='0,30'
     )
 
+    # 09:00 到 20:59 每小時執行一次
+    scheduler.add_job(
+        scheduled_market_data_task,
+        'cron',
+        hour='9-20',
+        minute='0'
+    )
+
     scheduler.start()
     print("Scheduler started successfully")
 
